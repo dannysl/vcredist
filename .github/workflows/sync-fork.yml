@@ -1,0 +1,18 @@
+name: 自动同步上游 (sync fork)
+
+on:
+  schedule:
+    # cron 使用 UTC 时间; 02:00 UTC = 北京时间 10:00
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Sync with upstream
+        run: gh repo sync "$GITHUB_REPOSITORY"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
